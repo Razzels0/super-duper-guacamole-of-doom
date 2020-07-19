@@ -20,6 +20,11 @@ lvl1 = 730834782107205752
 # Auto roles
 join = [lvl1]
 
+# Auto role
+arc = 734426605291831366
+arm = 734426837605679177
+emo = '👍'
+ar = 731565280593051728
 
 def rcg(leng):
 	a=''
@@ -41,6 +46,11 @@ class settings(commands.Cog):
 		self.ver = {}
 		self.log = log
 		self.server = server
+		#auto_role = self.bot.get_channel(arc)
+		#message = auto_role.fetch_message(arm)
+		#if len(message.reactions) == 0:
+		#	await message.add_reaction('👍')
+
 
 	async def logg(self, message):
 		chan = self.bot.get_channel(log)
@@ -94,6 +104,34 @@ class settings(commands.Cog):
 					await self.logg('{} został zweryfikowany.'.format(message.author.display_name))
 				else:
 					pass
+
+	@commands.Cog.listener()
+	async def on_raw_reaction_add(self, payload):
+		member = payload.member
+		message = payload.message_id
+		print(message)
+		if message == arm:
+			print(payload.emoji.name, emo)
+			if payload.emoji.name == emo:
+				await member.add_roles(member.guild.get_role(ar))
+
+	@commands.Cog.listener()
+	async def on_raw_reaction_remove(self, payload):
+		member =  self.bot.get_guild(payload.guild_id).get_member(payload.user_id)
+		message = payload.message_id
+		print(message)
+		if message == arm:
+			print(payload.emoji.name, emo)
+			if payload.emoji.name == emo:
+				await member.remove_roles(member.guild.get_role(ar))
+
+	#@commands.Cog.listener()
+	#async def on_ready(self):
+	#	auto_role = self.bot.get_channel(arc)
+	#	message = await auto_role.fetch_message(arm)
+	#	if len(message.reactions) == 0:
+	#		await message.add_reaction('👍')
+
 
 def setup(bot):
 	bot.add_cog(settings(bot))
