@@ -1,13 +1,11 @@
 import asyncio
 from discord.ext import commands, tasks
 import discord
-#import praw
-from random import randint
 import os
-import json
-import locales.languages as l
+from dotenv import load_dotenv
 
-TOKEN = 'NjczMTUyNzYzMjE5NDEwOTY1.XjV8jg.RFEUgk3Wi6DjN7b0RuA6vhGXn4A'
+load_dotenv()
+TOKEN = os.environ["TOKEN"]
 BOT_PREFIX=('.')
 bot = commands.Bot(command_prefix = BOT_PREFIX)
 # mywaifulist.moe/random
