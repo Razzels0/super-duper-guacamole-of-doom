@@ -7,6 +7,7 @@ import io
 ###  Vars
 chars = list('0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ')
 
+
 # Server
 server = 696772062164811818
 
