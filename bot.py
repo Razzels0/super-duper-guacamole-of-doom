@@ -13,7 +13,7 @@ bot = commands.Bot(command_prefix = BOT_PREFIX)
 
 bot.remove_command('help')
 OWNERS = ['215553356452724747', '390394829789593601']
-initial_extensions = ['Cogs.AutoRole', 'Cogs.Commands']
+initial_extensions = ['Cogs.AutoRole', 'Cogs.Commands', 'Cogs.Leveling']
 blacklists = {
 	'servers':[], 
 	'users':[], 

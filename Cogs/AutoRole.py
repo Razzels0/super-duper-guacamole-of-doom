@@ -16,9 +16,10 @@ log = 734147420207710268
 
 # Roles
 lvl1 = 730834782107205752
+verified = 735211862043394190
 
 # Auto roles
-join = [lvl1]
+join = [verified]
 
 # Auto role
 arc = 734426605291831366
@@ -102,16 +103,19 @@ class settings(commands.Cog):
 					for role in join:
 						await member.add_roles(member.guild.get_role(role))
 					await self.logg('{} został zweryfikowany.'.format(message.author.display_name))
+					if member.dm_channel == None:
+						await member.create_dm()
+					await member.dm_channel.send('Weryfikacja zakończona sukcesem.')
 				else:
-					pass
+					if member.dm_channel == None:
+						await member.create_dm()
+					await member.dm_channel.send('Niepoprawny kod. Spróbuj ponownie.')
 
 	@commands.Cog.listener()
 	async def on_raw_reaction_add(self, payload):
 		member = payload.member
 		message = payload.message_id
-		print(message)
 		if message == arm:
-			print(payload.emoji.name, emo)
 			if payload.emoji.name == emo:
 				await member.add_roles(member.guild.get_role(ar))
 
@@ -119,9 +123,7 @@ class settings(commands.Cog):
 	async def on_raw_reaction_remove(self, payload):
 		member =  self.bot.get_guild(payload.guild_id).get_member(payload.user_id)
 		message = payload.message_id
-		print(message)
 		if message == arm:
-			print(payload.emoji.name, emo)
 			if payload.emoji.name == emo:
 				await member.remove_roles(member.guild.get_role(ar))
 
