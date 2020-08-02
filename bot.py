@@ -5,7 +5,9 @@ import os
 from dotenv import load_dotenv
 
 load_dotenv()
-TOKEN = os.environ["TOKEN"]
+TOKEN1 = os.environ["TOKEN1"]
+TOKEN2 = os.environ["TOKEN2"]
+TOKEN = TOKEN1 + TOKEN2
 BOT_PREFIX=('.')
 bot = commands.Bot(command_prefix = BOT_PREFIX)
 # mywaifulist.moe/random
@@ -13,13 +15,13 @@ bot = commands.Bot(command_prefix = BOT_PREFIX)
 
 bot.remove_command('help')
 OWNERS = ['215553356452724747', '390394829789593601']
-initial_extensions = ['Cogs.AutoRole', 'Cogs.Commands', 'Cogs.Leveling']
+#initial_extensions = ['Cogs.AutoRole', 'Cogs.Commands', 'Cogs.Leveling']
 blacklists = {
 	'servers':[], 
 	'users':[], 
 	'channels':[]
 }
-
+initial_extensions = ['Cogs.AutoRole']
 
 if __name__ == '__main__':
 	for extension in initial_extensions:
@@ -52,4 +54,4 @@ async def on_ready():
 	print('Connected to ' + str(len(bot.guilds)) + ' servers.')
 	print('------------')
 
-bot.run(TOKEN)
+bot.run(TOKEN[::-1])
