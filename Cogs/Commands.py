@@ -1,14 +1,9 @@
 import discord
 from discord.ext import commands
 import asyncio
-#import random
-#from PIL import Image, ImageFont, ImageDraw
-#import io
+from Cogs.Variables import *
 
-server = 696772062164811818
 
-priv = 731565280593051728
-priv_cat = 734480118797434951
 
 class Cmds(commands.Cog):
 	def __init__(self, bot):

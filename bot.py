@@ -13,15 +13,15 @@ bot = commands.Bot(command_prefix = BOT_PREFIX)
 # mywaifulist.moe/random
 #reddit = praw.Reddit(client_id='https://www.reddit.com', client_secret='Va3_xSGvN8qkbzKlu9s9FdmfJck', user_agent='testscript')
 
-bot.remove_command('help')
+#bot.remove_command('help')
 OWNERS = ['215553356452724747', '390394829789593601']
-#initial_extensions = ['Cogs.AutoRole', 'Cogs.Commands', 'Cogs.Leveling']
+initial_extensions = ['Cogs.AutoRole', 'Cogs.Commands', 'Cogs.Leveling']
 blacklists = {
 	'servers':[], 
 	'users':[], 
 	'channels':[]
 }
-initial_extensions = ['Cogs.AutoRole']
+#initial_extensions = ['Cogs.AutoRole']
 
 if __name__ == '__main__':
 	for extension in initial_extensions:

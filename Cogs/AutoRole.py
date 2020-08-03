@@ -3,29 +3,9 @@ from discord.ext import commands
 import random
 from PIL import Image, ImageFont, ImageDraw
 import io
-
-###  Vars
-chars = list('0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ')
+from Cogs.Variables import *
 
 
-# Server
-server = 696772062164811818
-
-# Text channels
-log = 734147420207710268
-
-# Roles
-lvl1 = 730834782107205752
-verified = 735211862043394190
-
-# Auto roles
-join = [verified]
-
-# Auto role
-arc = 734426605291831366
-arm = 734426837605679177
-emo = '👍'
-ar = 731565280593051728
 
 def rcg(leng):
 	a=''
@@ -115,17 +95,25 @@ class settings(commands.Cog):
 	async def on_raw_reaction_add(self, payload):
 		member = payload.member
 		message = payload.message_id
-		if message == arm:
-			if payload.emoji.name == emo:
-				await member.add_roles(member.guild.get_role(ar))
+		roles = [role.id for role in member.roles]
+		if any(x in roles for x in REQ5):
+			if message == arm:
+				if payload.emoji.name == emo:
+					await member.add_roles(member.guild.get_role(ar))
+		else:
+			print('no')
 
 	@commands.Cog.listener()
 	async def on_raw_reaction_remove(self, payload):
 		member =  self.bot.get_guild(payload.guild_id).get_member(payload.user_id)
 		message = payload.message_id
-		if message == arm:
-			if payload.emoji.name == emo:
-				await member.remove_roles(member.guild.get_role(ar))
+		roles = [role.id for role in member.roles]
+		if any(x in roles for x in REQ):
+			if message == arm:
+				if payload.emoji.name == emo:
+					await member.remove_roles(member.guild.get_role(ar))
+		else:
+			print('no')
 
 	#@commands.Cog.listener()
 	#async def on_ready(self):
