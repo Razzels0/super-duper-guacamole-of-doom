@@ -4,15 +4,25 @@ import random
 import json
 import datetime
 from Cogs.Variables import *
+from PIL import Image, ImageFont, ImageDraw
+import io
+import os
+from dotenv import load_dotenv
+import re
+import unicodedata
+from firebase import firebase
 
 #from PIL import Image, ImageFont, ImageDraw
 #import io
 
 #database
-with open('./Data/lvl_data.json') as data:
-    levels = json.load(data)
 
+fb = os.environ["FIREBASE"]
+fbs = os.environ["FIREBASE_SECRET"]
 
+authentication = firebase.FirebaseAuthentication(secret=fbs, email='skanerooo5@gmail.com')
+firebase = firebase.FirebaseApplication(fb, authentication=authentication)
+levels = profiles = firebase.get('/LVL/', '')
 
 
 def rcg(leng):
@@ -34,7 +44,6 @@ class settings(commands.Cog):
 		self.bot = bot
 		self.log = self.bot.get_cog('settings').logg
 		self.update_database.start()
-		print(levels)
 		
 	async def lvl_ann(self, message):
 		chan = self.bot.get_channel(lvls)
@@ -55,6 +64,40 @@ class settings(commands.Cog):
 				nex = lln.index(levels[user]['lvl'])
 				await member.add_roles(member.guild.get_role(ll[nex]))
 				await member.remove_roles(member.guild.get_role(ll[nex-1]))
+
+	@commands.command(brief='', help='', usage='', aliases=['p'])
+	@commands.guild_only()
+	async def profil(self, ctx):
+		w = 640
+		h = 320
+		image = Image.new('RGB', (w, h))
+		draw = ImageDraw.Draw(image)
+		await ctx.message.author.avatar_url_as(format='png', static_format='png', size=128).save('buffer.png')
+		avatar = Image.open('buffer.png', 'r')
+		draw.rectangle([0, 0, w, h], fill=(49,49,49), outline=(49,49,49))
+		draw.rectangle([176, 32, 608, 160], fill=(70,70,70), outline=(70,70,70))
+		#image = Image.open('./kote.jpg')
+		draw.rectangle([32, 224, w-32, 288], fill=(255,255,255), outline=(255,255,255))
+		#text = self.ver[str(member.id)]
+		font = ImageFont.truetype('arial.ttf', 30)
+		#tw, th = draw.textsize(text, font=font)
+		#print(tw, th)
+		#x = (w - tw)//2
+		#y = (h - th)//2
+		xp = levels[str(ctx.message.author.id)]["xp"]
+		nexp = 500+((15*levels[str(ctx.message.author.id)]["lvl"])*levels[str(ctx.message.author.id)]["lvl"])
+		p = xp/nexp
+		draw.rectangle([32, 224, 32+round((w-64)*p), 288], fill=(255,0,0), outline=(255,0,0))
+		name = str(unicodedata.normalize('NFKD', ctx.message.author.display_name).encode('ascii','ignore'), 'utf-8')
+		text = f'''{name}
+Poziom {levels[str(ctx.message.author.id)]["lvl"]}
+{xp}/{nexp} XP'''
+		draw.text((176, 32), text, fill=(255,255,255), font=font)
+		image.paste(avatar, (32, 32))
+		buffer = io.BytesIO()
+		image.save(buffer, format='PNG')
+		buffer.seek(0)
+		await ctx.send(file=discord.File(buffer, 'profile.png'))
 
 	@commands.Cog.listener()
 	async def on_message(self, message):
@@ -90,8 +133,11 @@ class settings(commands.Cog):
 
 	@tasks.loop(minutes=1.0)
 	async def update_database(self):
-		with open('./Data/lvl_data.json', 'w') as data:
-			json.dump(levels, data)
+		firebase.put('/', 'LVL', levels)
+
+	def cog_unload(self):
+		self.update_database.cancel()
+		firebase.put('/', 'LVL', levels)
 
 def setup(bot):
 	bot.add_cog(settings(bot))

@@ -8,7 +8,7 @@ load_dotenv()
 TOKEN1 = os.environ["TOKEN1"]
 TOKEN2 = os.environ["TOKEN2"]
 TOKEN = TOKEN1 + TOKEN2
-BOT_PREFIX=('.')
+BOT_PREFIX=(',')
 bot = commands.Bot(command_prefix = BOT_PREFIX)
 # mywaifulist.moe/random
 #reddit = praw.Reddit(client_id='https://www.reddit.com', client_secret='Va3_xSGvN8qkbzKlu9s9FdmfJck', user_agent='testscript')
