@@ -5,11 +5,7 @@ python-dotenv
 python_jwt
 gcloud
 sseclient
-<<<<<<< HEAD
 pycryptodome
-=======
-pycryptodome==3.6.6
->>>>>>> 9aae40c09c35c1dae4110ce48bbf3ca622c1106f
 requests_toolbelt
 firebase
 python-resize-image
