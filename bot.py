@@ -8,7 +8,7 @@ load_dotenv()
 TOKEN1 = os.environ["TOKEN1"]
 TOKEN2 = os.environ["TOKEN2"]
 TOKEN = TOKEN1 + TOKEN2
-BOT_PREFIX=('.')
+BOT_PREFIX=(',')
 bot = commands.Bot(command_prefix = BOT_PREFIX)
 # mywaifulist.moe/random
 #reddit = praw.Reddit(client_id='https://www.reddit.com', client_secret='Va3_xSGvN8qkbzKlu9s9FdmfJck', user_agent='testscript')
@@ -40,6 +40,14 @@ async def reload(ctx):
 				print('Failed to reload ' + str(extension))
 				text += 'Failed to reload ' + str(extension) + ' :negative_squared_cross_mark:\n'
 		await ctx.send(text)
+
+@bot.event
+async def on_error(error):
+	for item in OWNERS:
+		user = bot.get_user(item)
+		if user.dm_channel == None:
+			await user.create_dm()
+		await user.dm_channel.send(error)
 
 @bot.event
 async def on_message(message):
