@@ -200,7 +200,7 @@ Poziom {levels[str(ctx.message.author.id)]["lvl"]}
 					premium = 5
 				else:
 					premium = 1
-				points = ((1 + round(len(message.content)/25)) + (5 * len(ctx.message.attachments)))*premium
+				points = ((1 + round(len(message.content)/25)) + (5 * len(message.attachments)))*premium
 				levels[user]['xp'] += points
 				levels[user]['cooldown'] = (now+datetime.timedelta(seconds=30)).strftime("%m/%d/%Y, %H:%M:%S")
 				await self.lvl_up(user)
