@@ -222,6 +222,7 @@ Poziom {levels[str(ctx.message.author.id)]["lvl"]}
 
 	@tasks.loop(minutes=5.0)
 	async def check_voice(self):
+		await self.bot.wait_until_ready()
 		guild = self.bot.get_guild(server)
 		for channel in guild.voice_channels:
 			if len(channel.members) > 0:
