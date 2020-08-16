@@ -73,6 +73,7 @@ class settings(commands.Cog):
 		self.bot = bot
 		self.log = self.bot.get_cog('settings').logg
 		self.update_database.start()
+		self.check_voice.start()
 		
 	async def lvl_ann(self, message):
 		chan = self.bot.get_channel(lvls)
@@ -136,7 +137,7 @@ class settings(commands.Cog):
 #		avatar = Image.open('./buffer.png')
 #		await ctx.send(average_colour(avatar))
 
-	@commands.command(brief='', help='', usage='', aliases=['p'])
+	@commands.command(brief='', help='', usage='', aliases=['p', 'profile'])
 	@commands.guild_only()
 	async def profil(self, ctx):
 		w = 1280
