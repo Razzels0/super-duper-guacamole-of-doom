@@ -200,7 +200,7 @@ Poziom {levels[str(ctx.message.author.id)]["lvl"]}
 					premium = 5
 				else:
 					premium = 1
-				points = ((1 + round(len(message.content)/25)) + (5 * len(ctx.message.attachments)))*premium
+				points = ((1 + round(len(message.content)/25)) + (5 * len(message.attachments)))*premium
 				levels[user]['xp'] += points
 				levels[user]['cooldown'] = (now+datetime.timedelta(seconds=30)).strftime("%m/%d/%Y, %H:%M:%S")
 				await self.lvl_up(user)
@@ -218,6 +218,17 @@ Poziom {levels[str(ctx.message.author.id)]["lvl"]}
 				if not str(user.id) in levels.keys():
 					levels[str(user.id)] = {'xp': 0, 'lvl': 1, 'cooldown': datetime.datetime.min.strftime("%m/%d/%Y, %H:%M:%S")}
 					print(f'Added {user.id}')
+
+	@tasks.loop(minutes=5.0)
+	async def check_voice(self):
+		guild = self.bot.get_guild(server)
+		for channel in guild.voice_channels:
+			if len(channel.members) > 0:
+				for user in channel.members:
+					levels[str(user.id)]['xp'] += 5
+					if user.premium_since != None:
+						levels[str(user.id)]['xp'] += 10
+					await self.lvl_up(str(user.id))
 
 	@tasks.loop(minutes=1.0)
 	async def update_database(self):
