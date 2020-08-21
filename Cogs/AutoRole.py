@@ -96,7 +96,7 @@ class settings(commands.Cog):
 		member = payload.member
 		message = payload.message_id
 		roles = [role.id for role in member.roles]
-		if any(x in roles for x in REQ5):
+		if any(x in roles for x in PV_REQ):
 			if message == arm:
 				if payload.emoji.name == emo:
 					await member.add_roles(member.guild.get_role(ar))
@@ -108,7 +108,7 @@ class settings(commands.Cog):
 		member =  self.bot.get_guild(payload.guild_id).get_member(payload.user_id)
 		message = payload.message_id
 		roles = [role.id for role in member.roles]
-		if any(x in roles for x in REQ5):
+		if any(x in roles for x in PV_REQ):
 			if message == arm:
 				if payload.emoji.name == emo:
 					await member.remove_roles(member.guild.get_role(ar))

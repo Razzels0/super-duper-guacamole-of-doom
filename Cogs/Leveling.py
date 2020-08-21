@@ -23,7 +23,7 @@ fbs = os.environ["FIREBASE_SECRET"]
 
 authentication = firebase.FirebaseAuthentication(secret=fbs, email='skanerooo5@gmail.com')
 firebase = firebase.FirebaseApplication(fb, authentication=authentication)
-levels = profiles = firebase.get('/LVL/', '')
+levels = firebase.get('/LVL/', '')
 
 def most_frequent_colour(image):
 
@@ -188,6 +188,17 @@ Poziom {levels[str(ctx.message.author.id)]["lvl"]}
 		buffer.seek(0)
 		await ctx.send(file=discord.File(buffer, 'profile.png'))
 
+	@commands.command(brief='ADMIN ONLY', help='ADMIN ONLY', usage='.give xp ammount user')
+	@commands.guild_only()
+	async def give(self, ctx, *args):
+		if args[0] == 'xp':
+			if len(ctx.message.mentions) > 0:
+				user = str(ctx.message.mentions[0].id)
+			else:
+				user = args[2]
+			levels[user]['xp'] += int(args[1])
+			await self.lvl_up(user)
+
 	@commands.Cog.listener()
 	async def on_message(self, message):
 		if not message.author.bot:
@@ -201,7 +212,7 @@ Poziom {levels[str(ctx.message.author.id)]["lvl"]}
 					premium = 5
 				else:
 					premium = 1
-				points = ((1 + round(len(message.content)/25)) + (5 * len(message.attachments)))*premium
+				points = ((1 + round(len(message.content)/50)) + (5 * len(message.attachments)))*premium
 				levels[user]['xp'] += points
 				levels[user]['cooldown'] = (now+datetime.timedelta(seconds=30)).strftime("%m/%d/%Y, %H:%M:%S")
 				await self.lvl_up(user)

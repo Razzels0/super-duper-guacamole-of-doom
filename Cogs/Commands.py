@@ -51,6 +51,15 @@ class Cmds(commands.Cog):
 				await self.log('Usunięto kanał **{}** ponieważ nikt do niego nie dołączył przez 30 sekund.'.format(chan.name))
 		except:
 			pass
+			
+	@commands.command(brief='', help='', usage='', hidden=True)
+	async def ram(self, ctx, *args):
+		if str(ctx.message.author.id) in OWNERS:
+			pid = os.getpid()
+			py = psutil.Process(pid)
+			memoryUse = py.memory_info()[0]/2.**20
+			memoryUse = round(memoryUse, 1)
+			await ctx.send('memory use: '+ str(memoryUse) + 'MB')
 
 	@commands.Cog.listener()
 	async def on_voice_state_update(self, member, before, after):
