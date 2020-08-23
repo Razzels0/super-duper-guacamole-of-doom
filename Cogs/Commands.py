@@ -13,6 +13,13 @@ class Cmds(commands.Cog):
 
 	@commands.command(brief='', help='', usage='')
 	@commands.guild_only()
+	async def purge(ctx, num):
+		if str(ctx.message.author.id) in OWNERS:
+			deleted = await ctx.channel.purge(limit=int(num)+1)
+			await ctx.send('Deleted {} message(s)'.format(len(deleted)-1), delete_after=5)
+
+	@commands.command(brief='', help='', usage='')
+	@commands.guild_only()
 	async def kick(self, ctx, user, *args):
 		if ctx.message.author.guild_permissions.administrator or ctx.message.author.guild_permissions.kick_members:
 			user = ctx.message.mentions[0]
