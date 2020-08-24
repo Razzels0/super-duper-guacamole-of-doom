@@ -238,10 +238,11 @@ Poziom {levels[str(ctx.message.author.id)]["lvl"]}
 		for channel in guild.voice_channels:
 			if len(channel.members) > 0:
 				for user in channel.members:
-					levels[str(user.id)]['xp'] += 5
-					if user.premium_since != None:
-						levels[str(user.id)]['xp'] += 10
-					await self.lvl_up(str(user.id))
+					if not user.bot:
+						levels[str(user.id)]['xp'] += 5
+						if user.premium_since != None:
+							levels[str(user.id)]['xp'] += 10
+						await self.lvl_up(str(user.id))
 
 	@tasks.loop(minutes=1.0)
 	async def update_database(self):
