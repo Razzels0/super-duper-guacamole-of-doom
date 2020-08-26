@@ -27,10 +27,6 @@ class settings(commands.Cog):
 		self.ver = {}
 		self.log = log
 		self.server = server
-		#auto_role = self.bot.get_channel(arc)
-		#message = auto_role.fetch_message(arm)
-		#if len(message.reactions) == 0:
-		#	await message.add_reaction('👍')
 
 
 	async def logg(self, message):
@@ -48,18 +44,18 @@ class settings(commands.Cog):
 	@commands.Cog.listener()
 	async def on_member_join(self, member):
 		self.ver[str(member.id)] = rcg(10)
-		w = 540
-		h = 540
+		w = 564
+		h = 432
 		#image = Image.new('RGB', (IMAGE_WIDTH, IMAGE_HEIGHT))
-		image = Image.open('./kote.jpg')
+		image = Image.open('./panda.jpg')
 		draw = ImageDraw.Draw(image)
-		draw.rectangle([170, 250, w-170, h-250], fill=(255,255,255), outline=(0,0,0))
+		#draw.rectangle([170, 250, w-170, h-250], fill=(255,255,255), outline=(0,0,0))
 		text = self.ver[str(member.id)]
 		font = ImageFont.truetype('arial.ttf', 30)
 		tw, th = draw.textsize(text, font=font)
 		print(tw, th)
 		x = (w - tw)//2
-		y = (h - th)//2
+		y = 20
 		draw.text( (x, y), text, fill=(0,0,0), font=font)
 		buffer = io.BytesIO()
 		image.save(buffer, format='PNG')
@@ -96,10 +92,10 @@ class settings(commands.Cog):
 		member = payload.member
 		message = payload.message_id
 		roles = [role.id for role in member.roles]
-		if any(x in roles for x in PV_REQ):
-			if message == arm:
-				if payload.emoji.name == emo:
-					await member.add_roles(member.guild.get_role(ar))
+		if any(x in roles for x in COLOR_REQ):
+			if message == erm:
+				if payload.emoji.name in CR.keys():
+					await member.add_roles(member.guild.get_role(CR[payload.emoji.name]))
 		else:
 			print('no')
 
@@ -108,10 +104,10 @@ class settings(commands.Cog):
 		member =  self.bot.get_guild(payload.guild_id).get_member(payload.user_id)
 		message = payload.message_id
 		roles = [role.id for role in member.roles]
-		if any(x in roles for x in PV_REQ):
-			if message == arm:
-				if payload.emoji.name == emo:
-					await member.remove_roles(member.guild.get_role(ar))
+		if any(x in roles for x in COLOR_REQ):
+			if message == erm:
+				if payload.emoji.name in CR.keys():
+					await member.remove_roles(member.guild.get_role(CR[payload.emoji.name]))
 		else:
 			print('no')
 

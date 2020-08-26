@@ -13,7 +13,7 @@ class Cmds(commands.Cog):
 
 	@commands.command(brief='', help='', usage='')
 	@commands.guild_only()
-	async def purge(ctx, num):
+	async def purge(self, ctx, num):
 		if str(ctx.message.author.id) in OWNERS:
 			deleted = await ctx.channel.purge(limit=int(num)+1)
 			await ctx.send('Deleted {} message(s)'.format(len(deleted)-1), delete_after=5)
@@ -67,6 +67,13 @@ class Cmds(commands.Cog):
 			memoryUse = py.memory_info()[0]/2.**20
 			memoryUse = round(memoryUse, 1)
 			await ctx.send('memory use: '+ str(memoryUse) + 'MB')
+
+	@commands.command(brief='', help='', usage='', hidden=True)
+	async def otc(self, ctx):
+		auto_role = self.bot.get_channel(748244523972296807)
+		message = await auto_role.fetch_message(748244725399683187)
+		for item in CR.keys():
+			await message.add_reaction(item)
 
 	@commands.Cog.listener()
 	async def on_voice_state_update(self, member, before, after):
